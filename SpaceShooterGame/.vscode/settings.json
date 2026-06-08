@@ -1,0 +1,9 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "System/lib/poi-4.1.2.jar",
+        "System/lib/poi-ooxml-4.1.2.jar",
+        "System/lib/poi-ooxml-schemas-4.1.2.jar",
+        "System/lib/xmlbeans-3.1.0.jar"
+    ]
+}
