@@ -4,7 +4,7 @@ import ai.ui.Ui;
 import base.PeriodicScheduler;
 import shared.MainRouter;
 import shared.routers.SpaceShooterRouter;
-
+// ilya test Git
 public class App {
 
     private static MainRouter mainRouter = new MainRouter();
