@@ -6,12 +6,12 @@ import shared.MainRouter;
 import shared.routers.SpaceShooterRouter;
 
 public class App {
-
+//david test
     private static MainRouter mainRouter = new MainRouter();
     private static Ui ui;
     private static AppContent content = new AppContent();
     private static SpaceShooterRouter spaceRouter;
-
+//david
     // ac: register application routers
     private static void registerRouters() {
         spaceRouter = new SpaceShooterRouter(content.getBackend());
