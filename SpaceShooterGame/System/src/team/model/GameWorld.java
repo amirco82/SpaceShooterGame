@@ -38,7 +38,12 @@ public class GameWorld {
         // ---> UPDATE THIS LINE <---
         bonuses.removeIf(item -> item.isOutOfBounds() || item.isConsumed());
     }
-
+    // ac: purges all dynamic entities upon game termination
+    public void clearAllEntities() {
+        this.enemies.clear();
+        this.bullets.clear();
+        this.bonuses.clear();
+    }
     public PlayerShip getPlayerShip() { return this.playerShip; }
     public List<Enemy> getEnemies() { return this.enemies; }
     public List<Bullet> getBullets() { return this.bullets; }

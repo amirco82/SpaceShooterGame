@@ -1,4 +1,8 @@
 package shared.ui_ports;
+import java.util.List;
+import team.model.Enemy;
+import team.model.Bullet;
+import team.model.BonusItem;
 
 public interface SpaceShooterUiPort {
     // ac: abstract bridge methods strictly mapped to requirements document
@@ -9,7 +13,5 @@ public interface SpaceShooterUiPort {
     void showGameOver(int finalScore); 
     void addBullet(); 
     // ac: passes current frame data to the view for rendering
-    void renderFrame(java.util.List<team.model.Enemy> enemies, 
-                     java.util.List<team.model.Bullet> bullets, 
-                     java.util.List<team.model.BonusItem> bonuses);
+    void renderFrame(List<Enemy> enemies, List<Bullet> bullets, List<BonusItem> bonuses);
 }

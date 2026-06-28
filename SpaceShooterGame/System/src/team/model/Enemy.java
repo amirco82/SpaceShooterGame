@@ -7,6 +7,10 @@ public class Enemy {
     private int health;
     private final int scoreValue;
     
+    public java.awt.Rectangle getHitbox() {
+        return new java.awt.Rectangle(this.x, this.y, 40, 40);
+    }
+    
     public Enemy(int x, int y, int vy, int health, int scoreValue) {
         this.x = x;
         this.y = y;

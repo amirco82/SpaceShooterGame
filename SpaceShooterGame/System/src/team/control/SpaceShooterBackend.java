@@ -6,7 +6,6 @@ import team.model.Enemy;
 import team.model.BonusItem;
 import shared.ui_ports.SpaceShooterUiPort;
 
-
 public class SpaceShooterBackend {
     private final GameWorld gameWorld;
     private SpaceShooterUiPort uiPort;
@@ -15,8 +14,8 @@ public class SpaceShooterBackend {
     private final SpawnManager spawnManager;
     private final DifficultyManager difficultyManager;
     
-    private boolean isRunning = false;
-    private boolean isPaused = false;
+    // ac: state machine controller
+    private GameState currentState = GameState.INITIALIZING;
 
     private final PeriodicLoop gameLoop;
 
@@ -32,29 +31,53 @@ public class SpaceShooterBackend {
         this.uiPort = port;
     }
 
+    // ac: transition from initializing to active game and purge old state
     public void startGame() {
-        isRunning = true;
-        isPaused = false;
+        // ac: guard clause to prevent multiple timer instances if 'start' is triggered rapidly
+        if (this.currentState == GameState.ACTIVE_GAME) return; 
+
+        this.currentState = GameState.ACTIVE_GAME;
+        
+        // ac: 1. purge all dynamic entities from previous sessions to prevent memory leaks and ghost calculations
+        gameWorld.clearAllEntities(); 
+        
+        // ac: 2. reset game statistics (score, difficulty thresholds)
         gameWorld.getGameStats().resetState();
+        
+        // ac: 3. reset player ship to default spawn coordinates
+        gameWorld.getPlayerShip().setPosition(400, 400);
+        
+        // ac: Note - If PlayerShip has a resetHealth() or similar method, invoke it here 
+        // ac: to ensure the player starts with 100% hull integrity and default ammo.
+        
         this.gameLoop.startLoop();
     }
 
+    // ac: toggles execution state between active and suspended
     public void pauseGame() {
-        if (isRunning) isPaused = !isPaused;
+        if (this.currentState == GameState.ACTIVE_GAME) {
+            this.currentState = GameState.PAUSED;
+        } else if (this.currentState == GameState.PAUSED) {
+            this.currentState = GameState.ACTIVE_GAME;
+        }
     }
 
+   // ac: halt game execution, clear board, and transition to game over state
     public void stopGame() {
-        isRunning = false;
-        isPaused = false;
-        gameWorld.getPlayerShip().setPosition(400, 400);
+        this.currentState = GameState.GAME_OVER;
+        gameWorld.getPlayerShip().setPosition(400, 400);     
+        gameWorld.clearAllEntities(); 
         if (uiPort != null) {
             uiPort.updatePlayerShip(400, 400);
+            
+            uiPort.renderFrame(gameWorld.getEnemies(), gameWorld.getBullets(), gameWorld.getBonuses());
         }
         this.gameLoop.stopLoop();
     }
 
+    // ac: handle player spatial movement
     public void movePlayer(String direction) {
-        if (isRunning && !isPaused) {
+        if (currentState == GameState.ACTIVE_GAME) {
             int dx = 0, dy = 0;
             if (direction.equalsIgnoreCase("left")) dx = -10;
             else if (direction.equalsIgnoreCase("right")) dx = 10;
@@ -70,8 +93,9 @@ public class SpaceShooterBackend {
         }
     }
 
+    // ac: handle weapon firing mechanism
     public void fireWeapon() {
-        if (isRunning && !isPaused && gameWorld.getPlayerShip().getAmmo() > 0) {
+        if (currentState == GameState.ACTIVE_GAME && gameWorld.getPlayerShip().getAmmo() > 0) {
             gameWorld.getPlayerShip().decreaseAmmo();
             gameWorld.addBullet(new Bullet(gameWorld.getPlayerShip().getX() + 27, gameWorld.getPlayerShip().getY(), 10));
             if (uiPort != null) {
@@ -87,38 +111,43 @@ public class SpaceShooterBackend {
         }
     }
 
+    // ac: transition back to initializing state
+    public void restartGame() {
+        this.currentState = GameState.INITIALIZING;
+    }
+
     // ac: main engine cyclic callback driving object translations and boundary updates
     public void gameTick() {
-        if (!isRunning || isPaused) return;
+        if (currentState != GameState.ACTIVE_GAME) return;
 
-        // 1. Run environment item managers
+        // ac: run environment item managers
         spawnManager.spawnEnemyIfNeeded();
         spawnManager.spawnBonusIfNeeded();
 
-        // 2. Propagate active object coordinates
+        // ac: propagate active object coordinates
         gameWorld.getEnemies().forEach(Enemy::moveStep);
         gameWorld.getBullets().forEach(Bullet::moveStep);
         gameWorld.getBonuses().forEach(BonusItem::moveStep);
 
-        // 3. Process intersections and adjust attributes
+        // ac: process intersections and adjust attributes
         collisionManager.checkCollisions();
         difficultyManager.updateDifficulty();
 
-        // 4. Purge expired instances
+        // ac: purge expired instances
         gameWorld.removeExpiredObjects();
 
-        // 5. Update UI layer via port delegation
+        // ac: update UI layer via port delegation
         if (uiPort != null) {
             gameWorld.getGameStats().updateTime(0.016); 
             uiPort.updateScore(gameWorld.getGameStats().getScore());
             uiPort.updateHealth(gameWorld.getPlayerShip().getHealth(), gameWorld.getPlayerShip().getAmmo());
             
-            // ---> ADD THIS LINE TO SEND OBJECTS TO THE SCREEN <---
+            // ac: send render data to display
             uiPort.renderFrame(gameWorld.getEnemies(), gameWorld.getBullets(), gameWorld.getBonuses());
             
             if (gameWorld.getPlayerShip().isDestroyed()) {
-                isRunning = false;
-                gameLoop.stopLoop(); // Stop the loop on death
+                currentState = GameState.GAME_OVER;
+                gameLoop.stopLoop();
                 uiPort.showGameOver(gameWorld.getGameStats().getScore());
             }
         }

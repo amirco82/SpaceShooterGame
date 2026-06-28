@@ -1,0 +1,9 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "SpaceShooterGame/System/lib/poi-4.1.2.jar",
+        "SpaceShooterGame/System/lib/poi-ooxml-4.1.2.jar",
+        "SpaceShooterGame/System/lib/poi-ooxml-schemas-4.1.2.jar",
+        "SpaceShooterGame/System/lib/xmlbeans-3.1.0.jar"
+    ]
+}

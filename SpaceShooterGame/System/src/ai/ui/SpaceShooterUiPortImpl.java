@@ -1,9 +1,9 @@
 package ai.ui;
 
 import shared.ui_ports.SpaceShooterUiPort;
-import team.model.BonusItem;
-import team.model.Bullet;
-import team.model.Enemy;
+//import team.model.BonusItem;
+//import team.model.Bullet;
+//import team.model.Enemy;
 
 public class SpaceShooterUiPortImpl implements SpaceShooterUiPort {
     private final DrawingPanel drawingPanel;
