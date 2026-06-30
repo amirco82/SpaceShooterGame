@@ -33,25 +33,49 @@ public class SpaceShooterBackend {
 
     // ac: transition from initializing to active game and purge old state
     public void startGame() {
-        // ac: guard clause to prevent multiple timer instances if 'start' is triggered rapidly
-        if (this.currentState == GameState.ACTIVE_GAME) return; 
-
+        // ac: Reset the state to ACTIVE_GAME regardless of previous state (even if GAME_OVER)
         this.currentState = GameState.ACTIVE_GAME;
         
-        // ac: 1. purge all dynamic entities from previous sessions to prevent memory leaks and ghost calculations
+        // ac: Ensure HUD is cleared in the UI
+        if (uiPort != null) {
+            uiPort.hideGameOver(); 
+        }
+        
+        // ac: 1. Purge entities
         gameWorld.clearAllEntities(); 
         
-        // ac: 2. reset game statistics (score, difficulty thresholds)
+        // ac: 2. Reset stats
         gameWorld.getGameStats().resetState();
         
-        // ac: 3. reset player ship to default spawn coordinates
-        gameWorld.getPlayerShip().setPosition(400, 400);
+        // ac: 3. Reset player properties 
+        gameWorld.getPlayerShip().setPosition(400, 300);
+        gameWorld.getPlayerShip().resetHealth(); 
+        gameWorld.getPlayerShip().resetAmmo();   
         
-        // ac: Note - If PlayerShip has a resetHealth() or similar method, invoke it here 
-        // ac: to ensure the player starts with 100% hull integrity and default ammo.
-        
+        // ac: 4. Restart loop cleanly
+        this.gameLoop.stopLoop(); 
         this.gameLoop.startLoop();
     }
+    // public void startGame() {
+    //     // ac: guard clause to prevent multiple timer instances if 'start' is triggered rapidly
+    //     if (this.currentState == GameState.ACTIVE_GAME) return; 
+
+    //     this.currentState = GameState.ACTIVE_GAME;
+        
+    //     // ac: 1. purge all dynamic entities from previous sessions to prevent memory leaks and ghost calculations
+    //     gameWorld.clearAllEntities(); 
+        
+    //     // ac: 2. reset game statistics (score, difficulty thresholds)
+    //     gameWorld.getGameStats().resetState();
+        
+    //     // ac: 3. reset player ship to default spawn coordinates
+    //     gameWorld.getPlayerShip().setPosition(400, 400);
+        
+    //     // ac: Note - If PlayerShip has a resetHealth() or similar method, invoke it here 
+    //     // ac: to ensure the player starts with 100% hull integrity and default ammo.
+        
+    //     this.gameLoop.startLoop();
+    // }
 
     // ac: toggles execution state between active and suspended
     public void pauseGame() {
@@ -118,7 +142,7 @@ public class SpaceShooterBackend {
 
     // ac: main engine cyclic callback driving object translations and boundary updates
     public void gameTick() {
-        if (currentState != GameState.ACTIVE_GAME) return;
+        if (currentState != GameState.ACTIVE_GAME) { gameLoop.stopLoop(); return;}
 
         // ac: run environment item managers
         spawnManager.spawnEnemyIfNeeded();
@@ -146,8 +170,7 @@ public class SpaceShooterBackend {
             uiPort.renderFrame(gameWorld.getEnemies(), gameWorld.getBullets(), gameWorld.getBonuses());
             
             if (gameWorld.getPlayerShip().isDestroyed()) {
-                currentState = GameState.GAME_OVER;
-                gameLoop.stopLoop();
+                stopGame();
                 uiPort.showGameOver(gameWorld.getGameStats().getScore());
             }
         }

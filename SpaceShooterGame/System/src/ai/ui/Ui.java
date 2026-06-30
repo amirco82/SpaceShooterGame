@@ -20,18 +20,21 @@ public class Ui {
     // ac: main window for the space shooter UI
     private JFrame frame;
     // ac: panel that renders the player ship
-    private DrawingPanel drawingPanel;
+    private GameCanvasView drawingPanel;
+    // ac: panel that renders the HUD overlay
+    private HUDView hudPanel;
     // ac: UI port implementation used by backend to update ship position
     private SpaceShooterUiPortImpl uiPortImpl;
 
     public Ui() {
         // ac: initialize the drawing panel before UI ports are set
-        drawingPanel = new DrawingPanel();
+        drawingPanel = new GameCanvasView();
+        hudPanel = new HUDView();
     }
 
     public void setUiPorts() {
         // ac: create the UI port and register it with the backend
-        uiPortImpl = new SpaceShooterUiPortImpl(drawingPanel);
+        uiPortImpl = new SpaceShooterUiPortImpl(drawingPanel, hudPanel);
         my_base.App.content().getBackend().setUiPort(uiPortImpl);
     }
 
@@ -82,8 +85,13 @@ public class Ui {
         });
         controlPanel.add(worldSelector);
 
+        JPanel gameContainer = new JPanel(new java.awt.BorderLayout());
+        gameContainer.setOpaque(false);
+        gameContainer.add(drawingPanel, java.awt.BorderLayout.CENTER);
+        gameContainer.add(hudPanel, java.awt.BorderLayout.NORTH);
+
         frame.add(controlPanel, java.awt.BorderLayout.SOUTH);
-        frame.add(drawingPanel, java.awt.BorderLayout.CENTER);
+        frame.add(gameContainer, java.awt.BorderLayout.CENTER);
         frame.getContentPane().setBackground(new Color(4, 8, 16));
         frame.addKeyListener(new KeyboardInputHandler());
         frame.setVisible(true);

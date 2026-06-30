@@ -33,8 +33,12 @@ public class SpawnManager {
         if (bonusTickCounter >= 150) {
             bonusTickCounter = 0;
             int rx = random.nextInt(700);
-            String type = random.nextBoolean() ? "Health" : "Ammo";
-            gameWorld.addBonus(new BonusItem(rx, -30, type, 15));
+            
+            // ac: randomly assigns bonus type via Enum and scales effect value accordingly
+            BonusItem.BonusType type = random.nextBoolean() ? BonusItem.BonusType.HEALTH : BonusItem.BonusType.AMMO;
+            int effectValue = (type == BonusItem.BonusType.HEALTH) ? 20 : 15;
+            
+            gameWorld.addBonus(new BonusItem(rx, -30, type, effectValue));
         }
     }
 }

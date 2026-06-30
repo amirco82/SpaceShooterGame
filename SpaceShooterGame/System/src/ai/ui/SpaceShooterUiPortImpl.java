@@ -6,15 +6,17 @@ import shared.ui_ports.SpaceShooterUiPort;
 //import team.model.Enemy;
 
 public class SpaceShooterUiPortImpl implements SpaceShooterUiPort {
-    private final DrawingPanel drawingPanel;
+    private final GameCanvasView drawingPanel;
+    private final HUDView hudPanel;
     private int currentScore;
     private int currentHealth;
     private int currentAmmo;
     private boolean gameOverActive;
     private int finalScore;
 
-    public SpaceShooterUiPortImpl(DrawingPanel drawingPanel) {
+    public SpaceShooterUiPortImpl(GameCanvasView drawingPanel, HUDView hudPanel) {
         this.drawingPanel = drawingPanel;
+        this.hudPanel = hudPanel;
     }
 
     @Override
@@ -30,28 +32,36 @@ public class SpaceShooterUiPortImpl implements SpaceShooterUiPort {
     @Override
     public void updateScore(int score) {
         this.currentScore = score;
-        drawingPanel.updateScoreData(score);
-        drawingPanel.repaint();
+        hudPanel.updateHUDData(score, currentHealth, currentAmmo, 1);
+        hudPanel.repaint();
     }
 
     @Override
     public void updateHealth(int health, int ammo) {
         this.currentHealth = health;
         this.currentAmmo = ammo;
-        drawingPanel.updateHealthData(health, ammo);
-        drawingPanel.repaint();
+        hudPanel.updateHUDData(currentScore, health, ammo, 1);
+        hudPanel.repaint();
     }
 
     @Override
     public void showGameOver(int finalScore) {
         this.gameOverActive = true;
         this.finalScore = finalScore;
-        drawingPanel.repaint();
+        hudPanel.updateHUDData(finalScore, currentHealth, currentAmmo, 1);
+        hudPanel.showGameOver();
+        hudPanel.repaint();
     }
 
     @Override
     public void addBullet() {
         drawingPanel.repaint();
+    }
+
+   @Override
+    public void hideGameOver() {
+        this.gameOverActive = false; 
+        this.hudPanel.hideGameOver(); 
     }
 
     public void renderFrame(java.util.List<team.model.Enemy> enemies, java.util.List<team.model.Bullet> bullets, java.util.List<team.model.BonusItem> bonuses) {

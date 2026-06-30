@@ -14,4 +14,5 @@ public interface SpaceShooterUiPort {
     void addBullet(); 
     // ac: passes current frame data to the view for rendering
     void renderFrame(List<Enemy> enemies, List<Bullet> bullets, List<BonusItem> bonuses);
+    void hideGameOver();
 }

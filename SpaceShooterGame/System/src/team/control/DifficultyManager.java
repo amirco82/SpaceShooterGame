@@ -4,7 +4,7 @@ import team.model.GameStats;
 
 public class DifficultyManager {
     private final GameStats gameStats;
-    private int thresholdScore = 1000;
+    private int thresholdScore = 100;
 
     public DifficultyManager(GameStats gameStats) {
         this.gameStats = gameStats;
@@ -14,7 +14,7 @@ public class DifficultyManager {
     public void updateDifficulty() {
         if (gameStats.getScore() >= thresholdScore) {
             gameStats.advanceLevel();
-            thresholdScore += 1500; // ac: sets up next progressive benchmark goal step
+            thresholdScore += 100; // ac: sets up next progressive benchmark goal step
         }
     }
 }

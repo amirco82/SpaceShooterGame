@@ -11,20 +11,20 @@ import java.awt.RadialGradientPaint;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.List;
+//import java.util.List;
 import java.util.Random;
 import team.model.BonusItem;
 import team.model.Bullet;
 import team.model.Enemy;
 
-public class DrawingPanel extends JPanel {
+public class GameCanvasView extends JPanel {
     private int shipX = 400;
     private int shipY = 400;
     private String currentWorld = "World 1";
-    private final Random random = new Random();
-    private BufferedImage backgroundImage;
-    private int backgroundWidth = -1;
-    private int backgroundHeight = -1;
+ //   private final Random random = new Random();
+ //   private BufferedImage backgroundImage;
+ //   private int backgroundWidth = -1;
+ //   private int backgroundHeight = -1;
     private BufferedImage backgroundImageWorld1;
     private BufferedImage backgroundImageWorld2;
     private BufferedImage backgroundImageWorld3;
@@ -32,9 +32,6 @@ public class DrawingPanel extends JPanel {
     private java.util.List<team.model.Enemy> enemies = new ArrayList<>();
     private java.util.List<team.model.Bullet> bullets = new ArrayList<>();
     private java.util.List<team.model.BonusItem> bonuses = new ArrayList<>();
-    private int score;
-    private int health;
-    private int ammo;
 
     public void updateShipPosition(int x, int y) {
         this.shipX = x;
@@ -78,15 +75,6 @@ public class DrawingPanel extends JPanel {
         this.enemies = enemies != null ? new ArrayList<>(enemies) : new ArrayList<>();
         this.bullets = bullets != null ? new ArrayList<>(bullets) : new ArrayList<>();
         this.bonuses = bonuses != null ? new ArrayList<>(bonuses) : new ArrayList<>();
-    }
-
-    public void updateScoreData(int score) {
-        this.score = score;
-    }
-
-    public void updateHealthData(int health, int ammo) {
-        this.health = health;
-        this.ammo = ammo;
     }
 
     private void drawDeepSpaceBackground(Graphics2D g2d, int width, int height, String theme) {
@@ -157,7 +145,7 @@ public class DrawingPanel extends JPanel {
             g2d.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
             int width = getWidth();
             int height = getHeight();
-            java.awt.Composite originalComposite = g2d.getComposite();
+         //   java.awt.Composite originalComposite = g2d.getComposite();
 
             BufferedImage bg = getCachedBackground(currentWorld, width, height);
             if (bg != null) {
@@ -298,11 +286,6 @@ public class DrawingPanel extends JPanel {
                 }
             }
 
-            g2d.setColor(java.awt.Color.WHITE);
-            g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 16));
-            g2d.drawString("Score: " + score, 15, 25);
-            g2d.drawString("Health: " + health, 15, 45);
-            g2d.drawString("Ammo: " + ammo, 15, 65);
         } finally {
             g2d.dispose();
         }

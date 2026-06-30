@@ -11,7 +11,7 @@ public class GameWorld {
     private final GameStats gameStats;
 
     public GameWorld() {
-        this.playerShip = new PlayerShip(400, 400);
+        this.playerShip = new PlayerShip(400, 350);
         this.enemies = new ArrayList<>();
         this.bullets = new ArrayList<>();
         this.bonuses = new ArrayList<>();

@@ -4,7 +4,7 @@ public class PlayerShip {
     private int x;
     private int y;
     // ac: core variables from design specifications
-    private final int speed = 10;
+ //   private final int speed = 10;
     private final int size = 60; 
     private int health = 100;    
     private int ammo = 30;       
@@ -45,6 +45,14 @@ public class PlayerShip {
         return this.health <= 0;
     }
 
+    
+    public void resetHealth() {
+        this.health = 100; 
+    }
+
+    public void resetAmmo() {
+        this.ammo = 30; 
+    }
     public int getX() { return this.x; }
     public int getY() { return this.y; }
     public int getHealth() { return this.health; }
