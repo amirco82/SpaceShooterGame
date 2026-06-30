@@ -39,6 +39,8 @@ public class SpaceShooterBackend {
         // ac: Ensure HUD is cleared in the UI
         if (uiPort != null) {
             uiPort.hideGameOver(); 
+            uiPort.updatePlayerShip(400, 300); 
+            uiPort.renderFrame(gameWorld.getEnemies(), gameWorld.getBullets(), gameWorld.getBonuses());
         }
         
         // ac: 1. Purge entities

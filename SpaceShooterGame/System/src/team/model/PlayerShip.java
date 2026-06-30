@@ -11,7 +11,7 @@ public class PlayerShip {
     
     // ac: exact boundaries to protect space shooter canvas layout
     private final int screenWidth = 784; 
-    private final int screenHeight = 470; 
+    private final int screenHeight = 400; 
 
     public PlayerShip(int startX, int startY) {
         this.x = startX;

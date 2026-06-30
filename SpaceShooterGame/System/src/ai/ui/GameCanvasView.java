@@ -19,7 +19,7 @@ import team.model.Enemy;
 
 public class GameCanvasView extends JPanel {
     private int shipX = 400;
-    private int shipY = 400;
+    private int shipY = 300;
     private String currentWorld = "World 1";
  //   private final Random random = new Random();
  //   private BufferedImage backgroundImage;
