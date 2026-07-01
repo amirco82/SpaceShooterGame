@@ -251,4 +251,11 @@ This repository is a student-style Java project that emphasizes architectural se
 * [Bullet-Enemy Hit](sequence_hit.mmd)
 * [Player-Enemy Collision](sequence_collision.mmd)
 * [Game Over](sequence_game_over.mmd)
+
+## Activity Diagrams
+* [Game Initialization](https://www.google.com/search?q=activity_game_init.mmd)
+* [Main Game Loop](https://www.google.com/search?q=activity_game_loop.mmd)
+* [Collision Handling](https://www.google.com/search?q=activity_collision.mmd)
+* [Game Over Flow](https://www.google.com/search?q=activity_game_over.mmd)
+
 ## Documentation Update

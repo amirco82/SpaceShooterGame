@@ -1,0 +1,11 @@
+flowchart TD
+    Trigger([Player destroyed or stop event]) --> Stop[SpaceShooterBackend.stopGame()]
+    Stop --> State[Set currentState = GAME_OVER]
+    State --> Reset[Clear entities and reset player position]
+    Reset --> UIShip[UiPort.updatePlayerShip(400, 400)]
+    UIShip --> UIRender[UiPort.renderFrame(enemies, bullets, bonuses)]
+    UIRender --> Show[UiPort.showGameOver(finalScore)]
+    Show --> HUD[HUDView shows game over overlay]
+    HUD --> LoopStop[PeriodicLoop.stopLoop()]
+    LoopStop --> Wait[Await restart or exit]
+    Wait -->|restart| Restart[SpaceShooterBackend.startGame()]

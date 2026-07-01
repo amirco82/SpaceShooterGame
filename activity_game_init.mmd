@@ -1,0 +1,8 @@
+flowchart TD
+    Start([Start application]) --> Init[AppContent.initContent()]
+    Init --> Backend[Create SpaceShooterBackend]
+    Backend --> World[Initialize GameWorld]
+    World --> Managers[Setup CollisionManager, SpawnManager, DifficultyManager]
+    Managers --> UiPort[Ui.setUiPorts() registers SpaceShooterUiPort]
+    UiPort --> Window[Create and show main game window]
+    Window --> Ready[Game ready to start]
