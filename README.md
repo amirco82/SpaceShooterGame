@@ -253,9 +253,9 @@ This repository is a student-style Java project that emphasizes architectural se
 * [Game Over](sequence_game_over.mmd)
 
 ## Activity Diagrams
-* [Game Initialization](https://www.google.com/search?q=activity_game_init.mmd)
-* [Main Game Loop](https://www.google.com/search?q=activity_game_loop.mmd)
-* [Collision Handling](https://www.google.com/search?q=activity_collision.mmd)
-* [Game Over Flow](https://www.google.com/search?q=activity_game_over.mmd)
+* [Game Initialization](activity_game_init.mmd)
+* [Main Game Loop](activity_game_loop.mmd)
+* [Collision Handling](activity_collision.mmd)
+* [Game Over Flow](activity_game_over.mmd)
 
 ## Documentation Update
