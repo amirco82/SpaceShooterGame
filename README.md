@@ -242,3 +242,13 @@ java -cp out my_base.App
 ## Notes
 
 This repository is a student-style Java project that emphasizes architectural separation and object-oriented design. It is well suited for exploring how a game loop, domain model, and UI can be organized into distinct responsibilities.
+
+### Sequence Diagrams
+* [Game Start](sequence_game_start.mmd)
+* [Player Movement](sequence_player_move.mmd)
+* [Shooting](sequence_shooting.mmd)
+* [Bonus Collection](sequence_bonus.mmd)
+* [Bullet-Enemy Hit](sequence_hit.mmd)
+* [Player-Enemy Collision](sequence_collision.mmd)
+* [Game Over](sequence_game_over.mmd)
+## Documentation Update
