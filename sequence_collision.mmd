@@ -1,0 +1,22 @@
+sequenceDiagram
+    participant Backend as SpaceShooterBackend
+    participant Collision as CollisionManager
+    participant GameWorld as GameWorld
+    participant Player as PlayerShip
+    participant Enemy as Enemy
+    participant UiPort as SpaceShooterUiPortImpl
+    participant HUD as HUDView
+
+    Backend->>Collision: checkCollisions()
+    Collision->>GameWorld: getPlayerShip()
+    Collision->>GameWorld: getEnemies()
+    Collision->>Enemy: detect collision with player
+    Collision->>Player: modifyHealth(-20)
+    Collision->>Player: isDestroyed()
+    alt player destroyed
+        Collision->>Backend: trigger game over or state transition
+    else player survives
+        Collision->>UiPort: updateHealth(player.health, player.ammo)
+        UiPort->>HUD: updateHUDData(score, player.health, player.ammo, level)
+        UiPort->>HUD: repaint()
+    end

@@ -1,0 +1,22 @@
+sequenceDiagram
+    participant Backend as SpaceShooterBackend
+    participant Collision as CollisionManager
+    participant GameWorld as GameWorld
+    participant Bullet as Bullet
+    participant Enemy as Enemy
+    participant GameStats as GameStats
+    participant UiPort as SpaceShooterUiPortImpl
+    participant HUD as HUDView
+
+    Backend->>Collision: checkCollisions()
+    Collision->>GameWorld: getBullets()
+    Collision->>GameWorld: getEnemies()
+    Collision->>Enemy: detect intersection
+    Collision->>Enemy: takeDamage(bullet.damage)
+    Collision->>Bullet: moveStep()  
+    Collision->>Enemy: if destroyed -> scoreUpdate()
+    Collision->>GameStats: scoreUpdate(enemy.scoreValue)
+    Collision->>GameWorld: removeExpiredObjects()
+    Backend->>UiPort: updateScore(gameStats.score)
+    UiPort->>HUD: updateHUDData(score, health, ammo, level)
+    UiPort->>HUD: repaint()

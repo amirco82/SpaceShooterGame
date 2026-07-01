@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant Backend as SpaceShooterBackend
+    participant UiPort as SpaceShooterUiPortImpl
+    participant HUD as HUDView
+    participant Canvas as GameCanvasView
+
+    Backend->>Backend: startGame()
+    Backend->>Backend: currentState = ACTIVE_GAME
+    Backend->>UiPort: hideGameOver()
+    UiPort->>HUD: hideGameOver()
+    Backend->>UiPort: updatePlayerShip(400, 300)
+    UiPort->>Canvas: updateShipPosition(400, 300)
+    Backend->>Backend: gameWorld.clearAllEntities()
+    Backend->>Backend: gameWorld.getGameStats().resetState()
+    Backend->>Backend: gameWorld.getPlayerShip().setPosition(400, 300)
+    Backend->>Backend: gameWorld.getPlayerShip().resetHealth()
+    Backend->>Backend: gameWorld.getPlayerShip().resetAmmo()
+    Backend->>UiPort: renderFrame(enemies, bullets, bonuses)
+    UiPort->>Canvas: updateGameObjects(enemies, bullets, bonuses)
+    UiPort->>Canvas: repaint()

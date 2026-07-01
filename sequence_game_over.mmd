@@ -1,0 +1,18 @@
+sequenceDiagram
+    participant Backend as SpaceShooterBackend
+    participant UiPort as SpaceShooterUiPortImpl
+    participant HUD as HUDView
+    participant Loop as PeriodicLoop
+
+    Backend->>Backend: stopGame()
+    Backend->>Backend: currentState = GAME_OVER
+    Backend->>Backend: gameWorld.getPlayerShip().setPosition(400, 400)
+    Backend->>Backend: gameWorld.clearAllEntities()
+    Backend->>UiPort: updatePlayerShip(400, 400)
+    UiPort->>Canvas: updateShipPosition(400, 400)
+    Backend->>UiPort: renderFrame(enemies, bullets, bonuses)
+    UiPort->>Canvas: updateGameObjects(enemies, bullets, bonuses)
+    UiPort->>Canvas: repaint()
+    Backend->>UiPort: showGameOver(gameWorld.getGameStats().getScore())
+    UiPort->>HUD: showGameOver()
+    Backend->>Loop: stopLoop()

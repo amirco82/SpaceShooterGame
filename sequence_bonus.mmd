@@ -1,0 +1,18 @@
+sequenceDiagram
+    participant Backend as SpaceShooterBackend
+    participant Collision as CollisionManager
+    participant GameWorld as GameWorld
+    participant Player as PlayerShip
+    participant UiPort as SpaceShooterUiPortImpl
+    participant HUD as HUDView
+
+    Backend->>Collision: checkCollisions()
+    Collision->>GameWorld: getPlayerShip()
+    Collision->>GameWorld: getBonuses()
+    Collision->>Player: check intersection with BonusItem
+    Collision->>Player: applyEffect(bonus)
+    Collision->>GameWorld: bonus.consume()
+    Collision->>Backend: (state updated)
+    Backend->>UiPort: updateHealth(playerHealth, playerAmmo)
+    UiPort->>HUD: updateHUDData(score, playerHealth, playerAmmo, level)
+    UiPort->>HUD: repaint()

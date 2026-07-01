@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant Backend as SpaceShooterBackend
+    participant GameWorld as GameWorld
+    participant UiPort as SpaceShooterUiPortImpl
+    participant Canvas as GameCanvasView
+
+    Backend->>Backend: fireWeapon()
+    Backend->>Backend: if ACTIVE_GAME and ammo > 0
+    Backend->>Backend: gameWorld.getPlayerShip().decreaseAmmo()
+    Backend->>GameWorld: addBullet(new Bullet(x+27, y, 10))
+    Backend->>UiPort: addBullet()
+    UiPort->>Canvas: repaint()
+    Backend->>UiPort: updateHealth(health, ammo)
+    UiPort->>HUD: updateHUDData(score, health, ammo, level)
+    UiPort->>HUD: repaint()

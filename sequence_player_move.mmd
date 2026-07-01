@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant Keyboard as KeyboardInputHandler
+    participant Router as SpaceShooterRouter
+    participant Backend as SpaceShooterBackend
+    participant UiPort as SpaceShooterUiPortImpl
+    participant Canvas as GameCanvasView
+
+    Keyboard->>Router: route("/player/move", direction)
+    Router->>Backend: movePlayer(direction)
+    Backend->>Backend: if ACTIVE_GAME
+    Backend->>Backend: gameWorld.getPlayerShip().updatePosition(dx, dy)
+    Backend->>UiPort: updatePlayerShip(x, y)
+    UiPort->>Canvas: updateShipPosition(x, y)
+    UiPort->>Canvas: repaint()
+    Backend->>UiPort: updateHealth(health, ammo)
+    UiPort->>HUD: updateHUDData(score, health, ammo, level)
+    UiPort->>HUD: repaint()
