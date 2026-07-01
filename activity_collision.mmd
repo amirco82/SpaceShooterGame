@@ -1,23 +1,24 @@
 flowchart TD
-    Start([CollisionManager.checkCollisions()]) --> ShipBox[Build player ship bounding box]
-    ShipBox --> BulletLoop[Iterate bullets vs enemies]
-    BulletLoop --> Intersect1{Bullet intersects enemy?}
-    Intersect1 -->|yes| Damage[Enemy.takeDamage() and Bullet.moveStep()]
-    Damage --> Destroyed{Enemy destroyed?}
-    Destroyed -->|yes| Score[GameStats.scoreUpdate()]
-    Destroyed -->|no| Continue1[Continue checking bullets]
-    Intersect1 -->|no| Continue1
-    ShipBox --> EnemyLoop[Iterate enemies vs player]
-    EnemyLoop --> Intersect2{Enemy collides with player?}
-    Intersect2 -->|yes| Health[PlayerShip.modifyHealth(-20)]
-    Health --> StateCheck[Check player destroyed status]
-    Intersect2 -->|no| Continue2[Continue checking enemies]
-    ShipBox --> BonusLoop[Iterate bonuses vs player]
-    BonusLoop --> Intersect3{Bonus collides with player?}
-    Intersect3 -->|yes| Apply[BonusItem.applyEffect(player)]
-    Apply --> Consume[BonusItem.consume()]
-    Consume --> Continue3[Continue checking bonuses]
-    Continue3 --> End[Update UI after collision handling]
-    StateCheck --> End
-    Continue1 --> End
-    Continue2 --> End
+    A["CollisionManager.checkCollisions()"] --> B["Build player ship bounding box"]
+    B --> C["Iterate bullets vs enemies"]
+    C --> D{"Bullet intersects enemy?"}
+    D -->|yes| E["Enemy.takeDamage() and Bullet.moveStep()"]
+    E --> F{"Enemy destroyed?"}
+    F -->|yes| G["GameStats.scoreUpdate()"]
+    F -->|no| H["Continue checking bullets"]
+    D -->|no| H
+    B --> I["Iterate enemies vs player"]
+    I --> J{"Enemy collides with player?"}
+    J -->|yes| K["PlayerShip.modifyHealth(-20)"]
+    K --> L["Check player destroyed status"]
+    J -->|no| M["Continue checking enemies"]
+    B --> N["Iterate bonuses vs player"]
+    N --> O{"Bonus collides with player?"}
+    O -->|yes| P["BonusItem.applyEffect(player)"]
+    P --> Q["BonusItem.consume()"]
+    Q --> R["Continue checking bonuses"]
+    O -->|no| R
+    R --> S["Update UI after collision handling"]
+    L --> S
+    H --> S
+    M --> S
