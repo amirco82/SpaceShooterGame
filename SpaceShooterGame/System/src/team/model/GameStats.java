@@ -4,6 +4,7 @@ public class GameStats {
     private int score = 0;
     private double gameTime = 0.0;
     private int difficultyLevel = 1;
+    @SuppressWarnings("unused")
     private int enemiesDestroyed = 0;
 
     // ac: core scoring mechanism incremented on dynamic object destructions

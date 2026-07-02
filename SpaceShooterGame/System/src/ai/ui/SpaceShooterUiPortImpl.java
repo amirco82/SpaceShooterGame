@@ -11,8 +11,10 @@ public class SpaceShooterUiPortImpl implements SpaceShooterUiPort {
     private int currentScore;
     private int currentHealth;
     private int currentAmmo;
-    private boolean gameOverActive;
-    private int finalScore;
+    @SuppressWarnings("unused") 
+    private boolean gameOverActive = false;
+    @SuppressWarnings("unused") 
+    private int finalScore = 0;
 
     public SpaceShooterUiPortImpl(GameCanvasView drawingPanel, HUDView hudPanel) {
         this.drawingPanel = drawingPanel;
